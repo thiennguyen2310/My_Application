@@ -7,12 +7,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Scriptable;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
     TextView t;
-    int num;
     Button num0, num1, num2, num3, num4, num5, num6, num7, num8, num9;
     Button sum, sub,mul, div, del , equal;
     String math = "";
@@ -48,37 +44,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         Button button = (Button) view;
         String buttonText = button.getText().toString();
-        String data = t.getText().toString();
 
         if (buttonText.equals("DEL")) {
-            t.setText("0");
-        }
-        if (buttonText.equals("=")) {
-            t.setText(t.getText());
-        }
-        else {
-            data = data + buttonText;
-        }
-        t.setText(data);
-        String finalResult = getResult(data);
-
-        if(!finalResult.equals("Err")){
-            t.setText(finalResult);
-        }
-    }
-
-    String getResult(String data){
-        try{
-            Context context  = Context.enter();
-            context.setOptimizationLevel(-1);
-            Scriptable scriptable = context.initStandardObjects();
-            String finalResult =  context.evaluateString(scriptable,data,"Javascript",1,null).toString();
-            if(finalResult.endsWith(".0")){
-                finalResult = finalResult.replace(".0","");
+            math = "";
+            t.setText(math);
+        }  else if (buttonText.equals("=")) {
+            if (math.split("\\+").length==2) {
+                String number[] = math.split("\\+");
+                int answer =  Integer.parseInt(number[0]) + Integer.parseInt(number[1]);
+                String finalResult = Integer.toString(answer);
+                t.setText(finalResult);
+                math = finalResult;
+            } else if (math.split("-").length==2) {
+                String number[] = math.split("-");
+                int answer =  Integer.parseInt(number[0]) - Integer.parseInt(number[1]);
+                String finalResult = Integer.toString(answer);
+                t.setText(finalResult);
+                math = finalResult;
+            } else if (math.split("\\*").length==2) {
+                String number[] = math.split("\\*");
+                int answer =  Integer.parseInt(number[0]) * Integer.parseInt(number[1]);
+                String finalResult = Integer.toString(answer);
+                t.setText(finalResult);
+                math = finalResult;
+            } else if (math.split("/").length==2) {
+                String number[] = math.split("/");
+                int answer =  Integer.parseInt(number[0]) / Integer.parseInt(number[1]);
+                String finalResult = Integer.toString(answer);
+                t.setText(finalResult);
+                math = finalResult;
             }
-            return finalResult;
-        }catch (Exception e){
-            return "Err";
+        } else {
+            math += buttonText;
+            t.setText(math);
         }
     }
 }
