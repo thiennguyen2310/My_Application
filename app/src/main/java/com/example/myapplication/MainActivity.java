@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,12 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
     TextView t;
     Button num0, num1, num2, num3, num4, num5, num6, num7, num8, num9;
-    Button sum, sub,mul, div, del , equal;
+    Button sum, sub,mul, div, del , equal, result;
     String math = "";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         t = findViewById(R.id.txtView);
         assignId(num0,R.id.num0);
         assignId(num1,R.id.num1);
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         assignId(div,R.id.div);
         assignId(del,R.id.del);
         assignId(equal,R.id.equal);
+        assignId(result, R.id.showAns);
     }
 
     private void assignId(Button btn, int id) {
@@ -74,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 t.setText(finalResult);
                 math = finalResult;
             }
+        } else if (buttonText.equals("Result")) {
+            Intent i = new Intent(MainActivity.this, DataWarehouse.class);
+            i.putExtra("value", math);
+            startActivity(i);
         } else {
             math += buttonText;
             t.setText(math);
